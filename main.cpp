@@ -261,7 +261,7 @@ void generateAlgorithmSVG(vector<int> order,
     const int TOP_MARGIN = 80;
     const int BOTTOM_MARGIN = 80;
 
-    ofstream svg(filename);
+    ofstream svg("/results/" + filename);
 
     svg << "<svg "
         << "width=\"" << WIDTH << "\" "
@@ -464,7 +464,7 @@ void generateAlgorithmSVG(vector<int> order,
 
 void generateHTMLReport() {
 
-    ofstream html("index.html");
+    ofstream html("/results/index.html");
 
     html << R"(
 

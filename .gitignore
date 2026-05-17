@@ -6,3 +6,6 @@
 
 # HTML reports
 *.html
+
+# Generated results directory
+results/
