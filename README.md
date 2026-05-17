@@ -25,7 +25,7 @@ Luego, abrir una terminal dentro de dicha carpeta.
 Dentro de la carpeta escogida, ejecutar:
 
 ```bash
-docker run -it --rm -v $(pwd):/app disk-scheduler bash
+docker run -it --rm -v "$(pwd):/app" disk-scheduler bash
 ```
 
 Esto montará la carpeta actual como el directorio `/app` dentro del contenedor, permitiendo que todos los archivos generados aparezcan directamente en el sistema anfitrión.
