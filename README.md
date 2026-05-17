@@ -22,7 +22,7 @@ Luego, abrir una terminal dentro de dicha carpeta.
 
 ### 3. Ejecutar el contenedor
 
-Dentro de la carpeta escogida, ejecutar:
+Dentro de la carpeta escogida, abrir Windows Powershell y ejecutar el siguiente comando:
 
 ```bash
 docker run -it --rm -v "${PWD}:/results" disk-scheduler bash
