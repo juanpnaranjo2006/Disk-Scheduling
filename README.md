@@ -25,7 +25,7 @@ Luego, abrir una terminal dentro de dicha carpeta.
 Dentro de la carpeta escogida, abrir Windows Powershell y ejecutar el siguiente comando:
 
 ```bash
-docker run -it --rm -v "${PWD}:/results" disk-scheduler bash
+docker run -it --rm -v "${PWD}:/app/results" disk-scheduler bash
 ```
 
 Esto montará la carpeta actual como el directorio `/app` dentro del contenedor, permitiendo que todos los archivos generados aparezcan directamente en el sistema anfitrión.
@@ -43,7 +43,7 @@ Una vez abierta la terminal bash dentro del contenedor, ejecutar:
 Por ejemplo:
 
 ```bash
-./disk 7
+./disk 1000
 ```
 
 ---
