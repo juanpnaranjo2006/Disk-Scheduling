@@ -92,6 +92,7 @@ def totalHeadMovement(requests : list[int]):
             prevPos = req
     return totalMovement
 
+#Esta función no
 def graficar_requests(ax, requests, titulo, max_y):
     x = list(range(len(requests)))
     y = requests
@@ -125,6 +126,7 @@ def main():
         diskHeadInitialPos = int(parameters[1])
         if diskHeadInitialPos < 0 or diskHeadInitialPos >= N_CYLINDERS:
             print(f"Invalid Initial Position for Disk Head!\nInitial Cylinder: 0\nMaximum Cylinder: {N_CYLINDERS}\nDisk Head Initial Position: {diskHeadInitialPos}")
+            return 0
         requests = generateRandRequests(0, N_CYLINDERS - 1, N_REQUESTS)
         print("Requests:")
         print(requests)
@@ -137,6 +139,8 @@ def main():
         totalMovScanDOWN = totalHeadMovement(scanRequestsDOWN)
         totalMovC_ScanUP = totalHeadMovement(c_scanRequestsUP)
         totalMovC_ScanDOWN = totalHeadMovement(c_scanRequestsDOWN)
+
+        #Hasta aquí
 
         #print("Algorithms:")
 
