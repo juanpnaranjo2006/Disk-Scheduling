@@ -8,8 +8,8 @@
 
 using namespace std;
 
-const int N_REQUESTS = 10;
-const int N_CYLINDERS = 15;
+const int N_REQUESTS = 1000;
+const int N_CYLINDERS = 5000;
 
 vector<int> generateRandRequests(int infLimit, int supLimit, int nRequests) {
     vector<int> values;
@@ -597,23 +597,23 @@ int main(int argc, char* argv[]) {
         cout << "Algorithms:\n\n";
 
         cout << "FCFS\n";
-        printVector(requests);
+        //printVector(requests);
         cout << " : Total Mov: " << totalMovFCFS << "\n\n";
 
         cout << "SCAN UP\n";
-        printVector(scanRequestsUP);
+        //printVector(scanRequestsUP);
         cout << " : Total Mov: " << totalMovScanUP << "\n\n";
 
         cout << "SCAN DOWN\n";
-        printVector(scanRequestsDOWN);
+        //printVector(scanRequestsDOWN);
         cout << " : Total Mov: " << totalMovScanDOWN << "\n\n";
 
         cout << "C-SCAN UP\n";
-        printVector(c_scanRequestsUP);
+        //printVector(c_scanRequestsUP);
         cout << " : Total Mov: " << totalMovC_ScanUP << "\n\n";
 
         cout << "C-SCAN DOWN\n";
-        printVector(c_scanRequestsDOWN);
+        //printVector(c_scanRequestsDOWN);
         cout << " : Total Mov: " << totalMovC_ScanDOWN << "\n";
 
         generateAlgorithmSVG(requests,

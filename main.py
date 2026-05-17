@@ -2,8 +2,8 @@ import random
 from sys import argv
 import matplotlib.pyplot as plt
 
-N_REQUESTS = 10
-N_CYLINDERS = 15
+N_REQUESTS = 1000
+N_CYLINDERS = 5000
 
 def generateRandRequests(infLimit : int, supLimit : int, nRequests : int):
     return random.sample(range(infLimit, supLimit), nRequests)
