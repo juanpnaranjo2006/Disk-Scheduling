@@ -5,11 +5,13 @@
 #include <cmath>
 #include <fstream>
 #include <chrono>
+#include <filesystem>
 
 using namespace std;
 
 const int N_REQUESTS = 1000;
 const int N_CYLINDERS = 5000;
+std::filesystem::create_directory("results");
 
 vector<int> generateRandRequests(int infLimit, int supLimit, int nRequests) {
     vector<int> values;

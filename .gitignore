@@ -9,3 +9,6 @@
 
 # Generated results directory
 results/
+
+#Visual Studio Trash
+.vscode/
