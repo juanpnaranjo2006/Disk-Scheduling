@@ -252,37 +252,41 @@ void generateAlgorithmSVG(vector<int> order,
                           string filename,
                           string title) {
 
-    const int WIDTH = 1000;
-    const int HEIGHT = 700;
+    const int WIDTH = 2400;
+    const int HEIGHT = 1400;
 
-    const int LEFT_MARGIN = 100;
-    const int RIGHT_MARGIN = 80;
+    const int LEFT_MARGIN = 120;
+    const int RIGHT_MARGIN = 40;
 
     const int TOP_MARGIN = 80;
-    const int BOTTOM_MARGIN = 80;
+    const int BOTTOM_MARGIN = 100;
 
-    ofstream svg("/results/" + filename);
+    const int graphWidth =
+        WIDTH - LEFT_MARGIN - RIGHT_MARGIN;
+
+    const int graphHeight =
+        HEIGHT - TOP_MARGIN - BOTTOM_MARGIN;
+
+    ofstream svg("results/" + filename);
 
     svg << "<svg "
         << "width=\"" << WIDTH << "\" "
         << "height=\"" << HEIGHT << "\" "
         << "xmlns=\"http://www.w3.org/2000/svg\">\n";
 
-    /* ================= ARROW DEFINITION ================= */
+    /* ================= BACKGROUND ================= */
 
     svg << R"(
 
-<defs>
-  <marker id="arrow"
-          markerWidth="10"
-          markerHeight="10"
-          refX="10"
-          refY="3"
-          orient="auto">
+<rect width="100%" height="100%" fill="white"/>
 
-    <path d="M0,0 L0,6 L9,3 z" fill="black"/>
-  </marker>
-</defs>
+<style>
+
+text {
+    font-family: Arial;
+}
+
+</style>
 
 )";
 
@@ -291,15 +295,13 @@ void generateAlgorithmSVG(vector<int> order,
     svg << "<text "
         << "x=\"" << WIDTH / 2 << "\" "
         << "y=\"40\" "
-        << "font-size=\"28\" "
+        << "font-size=\"32\" "
+        << "font-weight=\"bold\" "
         << "text-anchor=\"middle\">"
         << title
         << "</text>\n";
 
     /* ================= AXES ================= */
-
-    int graphWidth = WIDTH - LEFT_MARGIN - RIGHT_MARGIN;
-    int graphHeight = HEIGHT - TOP_MARGIN - BOTTOM_MARGIN;
 
     /* Y axis */
     svg << "<line "
@@ -308,7 +310,7 @@ void generateAlgorithmSVG(vector<int> order,
         << "x2=\"" << LEFT_MARGIN << "\" "
         << "y2=\"" << HEIGHT - BOTTOM_MARGIN << "\" "
         << "stroke=\"black\" "
-        << "stroke-width=\"3\" />\n";
+        << "stroke-width=\"2\" />\n";
 
     /* X axis */
     svg << "<line "
@@ -317,59 +319,70 @@ void generateAlgorithmSVG(vector<int> order,
         << "x2=\"" << WIDTH - RIGHT_MARGIN << "\" "
         << "y2=\"" << HEIGHT - BOTTOM_MARGIN << "\" "
         << "stroke=\"black\" "
-        << "stroke-width=\"3\" />\n";
+        << "stroke-width=\"2\" />\n";
 
-    /* ================= Y LABELS ================= */
+    /* ================= GRID ================= */
 
-    for (int c = 0; c < N_CYLINDERS; c++) {
+    const int Y_DIVISIONS = 5;
+    const int X_DIVISIONS = 5;
+
+    /* Y GRID */
+    for (int i = 0; i <= Y_DIVISIONS; i++) {
+
+        double ratio =
+            (double)i / Y_DIVISIONS;
 
         double y =
             HEIGHT - BOTTOM_MARGIN -
-            ((double)c / (N_CYLINDERS - 1))
-            * graphHeight;
+            ratio * graphHeight;
 
-        /* tick */
+        int cylinder =
+            ratio * (N_CYLINDERS - 1);
+
         svg << "<line "
-            << "x1=\"" << LEFT_MARGIN - 10 << "\" "
+            << "x1=\"" << LEFT_MARGIN << "\" "
             << "y1=\"" << y << "\" "
-            << "x2=\"" << LEFT_MARGIN + 10 << "\" "
+            << "x2=\"" << WIDTH - RIGHT_MARGIN << "\" "
             << "y2=\"" << y << "\" "
-            << "stroke=\"black\" "
-            << "stroke-width=\"2\" />\n";
+            << "stroke=\"#dddddd\" "
+            << "stroke-width=\"1\" />\n";
 
-        /* label */
         svg << "<text "
-            << "x=\"" << LEFT_MARGIN - 30 << "\" "
+            << "x=\"" << LEFT_MARGIN - 20 << "\" "
             << "y=\"" << y + 5 << "\" "
-            << "font-size=\"16\" "
-            << "text-anchor=\"middle\">"
-            << c
+            << "font-size=\"18\" "
+            << "text-anchor=\"end\">"
+            << cylinder
             << "</text>\n";
     }
 
-    /* ================= X LABELS ================= */
+    /* X GRID */
+    for (int i = 0; i <= X_DIVISIONS; i++) {
 
-    for (int i = 0; i < order.size(); i++) {
+        double ratio =
+            (double)i / X_DIVISIONS;
 
         double x =
             LEFT_MARGIN +
-            ((double)i / (order.size() - 1))
-            * graphWidth;
+            ratio * graphWidth;
+
+        int requestIndex =
+            ratio * (order.size() - 1);
 
         svg << "<line "
             << "x1=\"" << x << "\" "
-            << "y1=\"" << HEIGHT - BOTTOM_MARGIN - 10 << "\" "
+            << "y1=\"" << TOP_MARGIN << "\" "
             << "x2=\"" << x << "\" "
-            << "y2=\"" << HEIGHT - BOTTOM_MARGIN + 10 << "\" "
-            << "stroke=\"black\" "
-            << "stroke-width=\"2\" />\n";
+            << "y2=\"" << HEIGHT - BOTTOM_MARGIN << "\" "
+            << "stroke=\"#dddddd\" "
+            << "stroke-width=\"1\" />\n";
 
         svg << "<text "
             << "x=\"" << x << "\" "
-            << "y=\"" << HEIGHT - BOTTOM_MARGIN + 35 << "\" "
-            << "font-size=\"16\" "
+            << "y=\"" << HEIGHT - BOTTOM_MARGIN + 30 << "\" "
+            << "font-size=\"18\" "
             << "text-anchor=\"middle\">"
-            << i
+            << requestIndex
             << "</text>\n";
     }
 
@@ -403,8 +416,8 @@ void generateAlgorithmSVG(vector<int> order,
             << "x2=\"" << x2 << "\" "
             << "y2=\"" << y2 << "\" "
             << "stroke=\"blue\" "
-            << "stroke-width=\"3\" "
-            << "marker-end=\"url(#arrow)\" />\n";
+            << "stroke-width=\"0.5\" "
+            << "stroke-opacity=\"0.5\" />\n";
     }
 
     /* ================= POINTS ================= */
@@ -424,34 +437,67 @@ void generateAlgorithmSVG(vector<int> order,
         svg << "<circle "
             << "cx=\"" << x << "\" "
             << "cy=\"" << y << "\" "
-            << "r=\"8\" "
-            << "fill=\"red\" />\n";
+            << "r=\"0.8\" "
+            << "fill=\"red\" "
+            << "fill-opacity=\"0.8\" />\n";
+    }
 
-        svg << "<text "
-            << "x=\"" << x << "\" "
-            << "y=\"" << y - 20 << "\" "
-            << "font-size=\"14\" "
-            << "text-anchor=\"middle\">"
-            << order[i]
-            << "</text>\n";
+    /* ================= START/END ================= */
+
+    if (!order.empty()) {
+
+        /* START */
+
+        {
+            double x = LEFT_MARGIN;
+
+            double y =
+                HEIGHT - BOTTOM_MARGIN -
+                ((double)order[0] / (N_CYLINDERS - 1))
+                * graphHeight;
+
+            svg << "<circle "
+                << "cx=\"" << x << "\" "
+                << "cy=\"" << y << "\" "
+                << "r=\"5\" "
+                << "fill=\"green\" />\n";
+        }
+
+        /* END */
+
+        {
+            double x =
+                LEFT_MARGIN + graphWidth;
+
+            double y =
+                HEIGHT - BOTTOM_MARGIN -
+                ((double)order.back() / (N_CYLINDERS - 1))
+                * graphHeight;
+
+            svg << "<circle "
+                << "cx=\"" << x << "\" "
+                << "cy=\"" << y << "\" "
+                << "r=\"5\" "
+                << "fill=\"red\" />\n";
+        }
     }
 
     /* ================= AXIS TITLES ================= */
 
     svg << "<text "
         << "x=\"" << WIDTH / 2 << "\" "
-        << "y=\"" << HEIGHT - 20 << "\" "
-        << "font-size=\"22\" "
+        << "y=\"" << HEIGHT - 25 << "\" "
+        << "font-size=\"24\" "
         << "text-anchor=\"middle\">"
-        << "Request Order"
+        << "Request Number"
         << "</text>\n";
 
     svg << "<text "
-        << "x=\"30\" "
+        << "x=\"40\" "
         << "y=\"" << HEIGHT / 2 << "\" "
-        << "font-size=\"22\" "
+        << "font-size=\"24\" "
         << "text-anchor=\"middle\" "
-        << "transform=\"rotate(-90 30,"
+        << "transform=\"rotate(-90 40,"
         << HEIGHT / 2
         << ")\">"
         << "Cylinder"
@@ -464,7 +510,7 @@ void generateAlgorithmSVG(vector<int> order,
 
 void generateHTMLReport() {
 
-    ofstream html("/results/index.html");
+    ofstream html("results/index.html");
 
     html << R"(
 
@@ -570,7 +616,7 @@ int main(int argc, char* argv[]) {
         vector<int> requests = generateRandRequests(0, N_CYLINDERS, N_REQUESTS);
 
         cout << "Requests:\n";
-        printVector(requests);
+        //printVector(requests);
         cout << "\n\n";
 
         vector<int> scanRequestsUP = scanOrder(diskHeadInitialPos, requests, N_CYLINDERS);
