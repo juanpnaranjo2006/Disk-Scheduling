@@ -249,9 +249,7 @@ void svgText(ofstream& svg,
         << "</text>\n";
 }
 
-void generateAlgorithmSVG(vector<int> order,
-                          string filename,
-                          string title) {
+void generateAlgorithmSVG(vector<int> order, string filename, string title, int totalMovement) {
 
     const int WIDTH = 2400;
     const int HEIGHT = 1400;
@@ -269,6 +267,12 @@ void generateAlgorithmSVG(vector<int> order,
         HEIGHT - TOP_MARGIN - BOTTOM_MARGIN;
 
     ofstream svg("results/" + filename);
+
+    if (!svg.is_open()) {
+        cout << "Error creating file: "
+             << filename << "\n";
+        return;
+    }
 
     svg << "<svg "
         << "width=\"" << WIDTH << "\" "
@@ -300,6 +304,36 @@ text {
         << "font-weight=\"bold\" "
         << "text-anchor=\"middle\">"
         << title
+        << "</text>\n";
+
+    /* ================= MOVEMENT BOX ================= */
+
+    const int BOX_WIDTH = 340;
+    const int BOX_HEIGHT = 70;
+
+    const int BOX_X =
+        WIDTH - BOX_WIDTH - 50;
+
+    const int BOX_Y = 25;
+
+    svg << "<rect "
+        << "x=\"" << BOX_X << "\" "
+        << "y=\"" << BOX_Y << "\" "
+        << "width=\"" << BOX_WIDTH << "\" "
+        << "height=\"" << BOX_HEIGHT << "\" "
+        << "rx=\"12\" "
+        << "fill=\"#f0f0f0\" "
+        << "stroke=\"#444\" "
+        << "stroke-width=\"2\" />\n";
+
+    svg << "<text "
+        << "x=\"" << BOX_X + BOX_WIDTH / 2 << "\" "
+        << "y=\"" << BOX_Y + BOX_HEIGHT / 2 + 5 << "\" "
+        << "font-size=\"28\" "
+        << "font-weight=\"bold\" "
+        << "text-anchor=\"middle\">"
+        << "Total Movement: "
+        << totalMovement
         << "</text>\n";
 
     /* ================= AXES ================= */
@@ -448,7 +482,6 @@ text {
     if (!order.empty()) {
 
         /* START */
-
         {
             double x = LEFT_MARGIN;
 
@@ -465,7 +498,6 @@ text {
         }
 
         /* END */
-
         {
             double x =
                 LEFT_MARGIN + graphWidth;
@@ -671,23 +703,23 @@ int main(int argc, char* argv[]) {
 
         generateAlgorithmSVG(requests,
                              "fcfs.svg",
-                             "FCFS");
+                             "FCFS", totalMovFCFS);
 
         generateAlgorithmSVG(scanRequestsUP,
                              "scan_up.svg",
-                             "SCAN UP");
+                             "SCAN UP", totalMovScanUP);
 
         generateAlgorithmSVG(scanRequestsDOWN,
                              "scan_down.svg",
-                             "SCAN DOWN");
+                             "SCAN DOWN", totalMovScanDOWN);
 
         generateAlgorithmSVG(c_scanRequestsUP,
                              "cscan_up.svg",
-                             "C-SCAN UP");
+                             "C-SCAN UP", totalMovC_ScanUP);
 
         generateAlgorithmSVG(c_scanRequestsDOWN,
                              "cscan_down.svg",
-                             "C-SCAN DOWN");
+                             "C-SCAN DOWN", totalMovC_ScanDOWN);
 
         cout << "SVG graphs generated!\n";
 
